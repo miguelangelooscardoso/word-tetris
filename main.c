@@ -42,7 +42,7 @@ void inicializar_letras(Jogo *jogo, Letra *letras, int num_letras);
 void mover_letras(Jogo *jogo, Letra *letras, int *letra_atual, int num_letras);
 void ler_palavra(Jogo *jogo, Letra *letras, int *letra_atual, int num_letras);
 
-
+// declaração de variáveis
 clock_t begin;
 float tempo;
 
@@ -55,9 +55,9 @@ int main()
 }
 void iniciar_jogo()
 {
-    int num_letras = 240;
+    int num_letras = 240; // Linhas * Colunas
     int letra_atual = 0;
-    int sleep = 1000;
+    int sleep = 1000; // 1 segundo
 //    int palavra;
     Jogo jogo; // estou a criar uma variável jogo do tipo Jogo (struct)
 //    Letra letra;
@@ -84,6 +84,9 @@ void iniciar_jogo()
 //    clock_t begin = clock();
     while (1)
     {
+//        printf("%d", num_letras);
+//        break;
+
         mover_letras(&jogo, letras, &letra_atual, num_letras);  // passa o endereço de letra_atual
 
         atualizar_quadro(&jogo, letras, num_letras);
@@ -91,6 +94,20 @@ void iniciar_jogo()
         imprimir_quadro(&jogo);
 
         Sleep(sleep); // 1 s
+
+        if (letra_atual >= num_letras)
+        {
+            num_letras += 100;
+
+            Letra *temp = (Letra *)realloc(letras, num_letras * sizeof(Letra));
+            if (temp == NULL)
+            {
+                printf("Erro ao realocar memória para letras.\n");
+                free(letras);
+                exit(1);
+            }
+            letras = temp;
+        }
     }
 //    clock_t end = clock();
 //    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
@@ -419,6 +436,8 @@ void menu()
     while(1)
     {
         system("cls");
+
+        // pressione qualquer tecla para voltar ao menu principal
 
         printf("====================================\n");
         printf("       *** Menu Principal ***\n");
